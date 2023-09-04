@@ -14,7 +14,7 @@ authRouter.post('/login', async(req: RequestWithBody<LoginInputType>, res: Respo
     const user = await QueryUserRepository.checkCredentials(req.body.loginOrEmail, req.body.password)
     if (user) {
         const token = await jwtService.createJWT(user)
-        return res.sendStatus(sendStatus.CREATED_201).send(token)
+        return res.status(sendStatus.OK_200).send({accessToken: token})
     } else {
         return res.sendStatus(sendStatus.UNAUTHORIZED_401)
     }
