@@ -7,7 +7,7 @@ import { ObjectId } from "mongodb";
 import {UsersMongoDbType } from "../types";
 
 
-export const userService = {
+export const QueryUserRepository = {
     
     async findAllUsers(pagination: PaginatedType): Promise<PaginatedUser<UserViewModel[]>> {     //tyt nado dobavit functions
         
@@ -31,7 +31,7 @@ export const userService = {
         return usersRepository.createUser(newUser)
     },
 
-    async findUserById (id: string): Promise<UserViewModel | null> {
+    async findUserById (id: ObjectId): Promise<UserViewModel | null> {
         return usersRepository.findUserById(id)
 
     },
@@ -46,7 +46,7 @@ export const userService = {
         if (user.passwordHash !== passwordHash) {
             return false
         }
-        return true
+        return user
     },
 
     async _generateHash(password: string, salt: string) {

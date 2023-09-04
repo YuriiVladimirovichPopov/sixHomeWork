@@ -30,7 +30,7 @@ describe('tests for /blogs', () => {
     
     it ("should return 404 for not existing blog", async () => {
         await getRequest()
-                .get(`${RouterPaths.blogs}/${9999999}`)
+                .get(`${RouterPaths.blogs}/999999999999999999999999`)
                 .expect(sendStatus.NOT_FOUND_404)
     })
 

@@ -4,12 +4,12 @@ import { sendStatus } from "./send-status";
 import { authorizationValidation,
           inputValidationErrors } from "../middlewares/input-validation-middleware";
 import { createBlogValidation, updateBlogValidation } from "../middlewares/validations/blogs.validation";
-import { createPostValidation, createPostValidationForBlogRouter } from "../middlewares/validations/posts.validation";
-import { RequestWithParams, RequestWithBody, PostsMongoDbType } from '../types';
+import { createPostValidationForBlogRouter } from "../middlewares/validations/posts.validation";
+import { RequestWithParams, RequestWithBody } from '../types';
 import { BlogInputModel } from "../models/blogs/blogsInputModel";
 import { getByIdParam } from "../models/getById";
 import { BlogViewModel } from '../models/blogs/blogsViewModel';
-import { queryRepository } from "../query repozitory/queryPostsRepository";
+import { queryPostRepository } from "../query repozitory/queryPostsRepository";
 import { getPaginationFromQuery } from './helpers/pagination';
 import { PaginatedBlog } from '../models/blogs/paginatedQueryBlog';
 import { PaginatedPost } from '../models/posts/paginatedQueryPost';
@@ -46,7 +46,7 @@ async (req: Request<{blogId: string}, {}, {}, {}>, res: Response) => {
   const pagination = getPaginationFromQuery(req.query)
   const foundBlogWithAllPosts: PaginatedPost<PostsViewModel> = 
   
-  await queryRepository.findAllPostsByBlogId(req.params.blogId, pagination) 
+  await queryPostRepository.findAllPostsByBlogId(req.params.blogId, pagination) 
      
   return res.status(sendStatus.OK_200).send(foundBlogWithAllPosts)
 })
@@ -69,7 +69,7 @@ async (req: Request, res: Response) => {
       return res.status(sendStatus.CREATED_201).send(newPostForBlogById);
     }
       return res.sendStatus(sendStatus.NOT_FOUND_404)
-   })
+})
 
 // 5 get/blogs/:id       не меняем
 blogsRouter.get('/:id', async (req: RequestWithParams<getByIdParam>, res: Response<BlogViewModel>) => {
@@ -77,10 +77,7 @@ blogsRouter.get('/:id', async (req: RequestWithParams<getByIdParam>, res: Respon
     if (!foundBlog) return res.sendStatus(sendStatus.NOT_FOUND_404);
 
       return res.status(sendStatus.OK_200).send(foundBlog);
-   
-      
-    
-  })
+})
 
 // 6 put/blogs/:id        не меняем
 blogsRouter.put('/:id',
@@ -107,7 +104,3 @@ async (req: RequestWithParams<getByIdParam>, res: Response) => {
   return res.sendStatus(sendStatus.NO_CONTENT_204)
 })
 
-//function RouterPath(arg0: {}) {
-//  throw new Error("Function not implemented.");
-//}
-//

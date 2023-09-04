@@ -3,5 +3,8 @@ export type UserViewModel = {
     login: string,
     email: string,
     createdAt: string,
+    //passwordSalt: string,
+    //passwordHash: string
+
     
 }

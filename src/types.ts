@@ -1,5 +1,6 @@
 import { Request } from "express"
 import { ObjectId } from 'mongodb';
+import { UserViewModel } from './models/users/userViewModel';
 
 
   export type BlogsMongoDbType = {
@@ -39,5 +40,16 @@ import { ObjectId } from 'mongodb';
       createdAt: string
   }
 
-export type RequestWithParams<T> = Request<T>
+  export type CommentsMongoDbType = {
+    id: string,       
+    content: string,
+    commentatorInfo: {
+    userId: string,
+    userLogin: string
+    },
+    createdAt: string
+  }
+
+export type RequestWithParams<T> = Request<T,{},{},{user: UserViewModel}>
 export type RequestWithBody<T> = Request<{}, {}, T>
+export type RequestWithUser<U extends UserViewModel> = Request<{}, {}, {}, {},  U>

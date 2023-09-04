@@ -13,7 +13,10 @@ app.use(corsMiddleware)
 const jsonBodyMiddleware = express.json()
 app.use(jsonBodyMiddleware)
 
+export const settings = {
+    JWT_SECRET: process.env.JWT_SECRET || "1234",
 
+}
 
 app.use('/blogs', blogsRouter)
 

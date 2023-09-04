@@ -1,12 +1,13 @@
-import { postsCollection } from '../db/db';
-import { PostsMongoDbType } from '../types';
+import { commentsCollection, postsCollection } from '../db/db';
+import { CommentsMongoDbType, PostsMongoDbType } from '../types';
 import { ObjectId } from 'mongodb';
 import { PostsInputModel } from '../models/posts/postsInputModel';
 import { PostsViewModel } from '../models/posts/postsViewModel';
 import { blogsRepository } from './blogs-repository';
+import { randomUUID } from 'crypto';
 
  
- export const postsRepository = {
+export const postsRepository = {
 
     _postMapper(post: PostsMongoDbType): PostsViewModel {
     return {
@@ -17,7 +18,7 @@ import { blogsRepository } from './blogs-repository';
         blogId: post.blogId,
         blogName: post.blogName,
         createdAt: post.createdAt
-    }
+        }
     },
     
     //10     READY
@@ -39,7 +40,27 @@ import { blogsRepository } from './blogs-repository';
     await postsCollection.insertOne(createPostForBlog)
     return this._postMapper(createPostForBlog)
     },
- 
+
+    async createCommentforPostId(postId: string, content: string, commentatorInfo: {userId:string, userLogin: string}):
+    Promise <CommentsMongoDbType> {
+       
+       const createCommentForPost = {
+             id: randomUUID(),
+             content, 
+             commentatorInfo,
+             createdAt: new Date().toISOString(),
+             postId
+        }
+   
+    await commentsCollection.insertOne({...createCommentForPost})
+       return  {
+         id: createCommentForPost.id,
+         content: createCommentForPost.content,
+         commentatorInfo: createCommentForPost.commentatorInfo,
+         createdAt: createCommentForPost.createdAt
+        }
+   },
+
     //11       READY
     async updatePost(id: string, data: PostsInputModel): Promise<PostsViewModel | boolean> {
         const foundPostById = await postsCollection.updateOne({_id: new ObjectId(id)}, {$set: {... data}  })
@@ -62,5 +83,5 @@ import { blogsRepository } from './blogs-repository';
             return false;
         }
     }
- }
+}
 

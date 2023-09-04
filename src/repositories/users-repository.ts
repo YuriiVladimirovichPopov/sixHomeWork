@@ -15,6 +15,8 @@ export const usersRepository = {
             login: user.login,
             email: user.email,              // TODO fix it all
             createdAt: user.createdAt,
+            //passwordHash: user.passwordHash,
+            //passwordSalt: user.passwordSalt
             
         }
     },
@@ -55,7 +57,7 @@ export const usersRepository = {
           return res
     },
 
-    async findUserById(id: string):Promise<UserViewModel | null> {
+    async findUserById(id: ObjectId):Promise<UserViewModel | null> {
         const userById = await usersCollection.findOne({_id: new ObjectId(id)},)
         if(!userById) {
             return null

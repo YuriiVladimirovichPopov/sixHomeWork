@@ -1,7 +1,7 @@
 import { ObjectId, WithId} from "mongodb";
 import { blogsCollection } from "../db/db";
 import { BlogInputModel } from "../models/blogs/blogsInputModel";
-import { BlogsMongoDbType, RequestWithBody } from '../types';
+import { BlogsMongoDbType } from '../types';
 import { BlogViewModel } from '../models/blogs/blogsViewModel';
 import { PaginatedType } from "../routers/helpers/pagination";
 import { PaginatedBlog } from '../models/blogs/paginatedQueryBlog';
@@ -89,6 +89,3 @@ export const blogsRepository = {
     }
 }
 
-//function _blogMapper(): any {
-//throw new Error("Function not implemented.");
-//}

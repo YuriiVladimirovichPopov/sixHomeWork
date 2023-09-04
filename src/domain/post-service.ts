@@ -2,7 +2,7 @@ import { PostsInputModel } from '../models/posts/postsInputModel';
 import { PostsViewModel } from '../models/posts/postsViewModel';
 import { blogsRepository } from '../repositories/blogs-repository';
 import { postsRepository } from '../repositories/posts-repository';
-import { queryRepository } from '../query repozitory/queryPostsRepository';
+import { queryPostRepository } from '../query repozitory/queryPostsRepository';
 import { PaginatedPost } from '../models/posts/paginatedQueryPost';
 import { PaginatedType } from '../routers/helpers/pagination';
  
@@ -11,12 +11,12 @@ import { PaginatedType } from '../routers/helpers/pagination';
 
     async findAllPosts(pagination: PaginatedType): Promise<PaginatedPost<PostsViewModel>> {
         
-         return await queryRepository.findAllPosts(pagination)
+         return await queryPostRepository.findAllPosts(pagination)
     },
 
     async findPostById( id: string): Promise<PostsViewModel | null> {
         
-         return await queryRepository.findPostById(id)
+         return await queryPostRepository.findPostById(id)
     },
     async createPost( data: PostsInputModel): Promise<PostsViewModel | null> {
      const blog = await blogsRepository.findBlogById(data.blogId)

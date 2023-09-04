@@ -1,7 +1,7 @@
-export type PaginatedBlog<T> = {
+export type PaginatedComment<T> = {
     pagesCount: number,
     page: number,
     pageSize: number,
     totalCount: number,
-    items: T
+    items: T[]
 }

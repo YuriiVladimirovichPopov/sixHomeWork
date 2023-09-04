@@ -1,12 +1,13 @@
-import { postsCollection } from '../db/db';
-import { PostsMongoDbType } from '../types';
+import { commentsCollection, postsCollection } from '../db/db';
+import { CommentsMongoDbType, PostsMongoDbType } from '../types';
 import { PaginatedType } from "../routers/helpers/pagination";
 import { ObjectId, WithId, Filter } from 'mongodb';
 import { PaginatedPost } from '../models/posts/paginatedQueryPost';
 import { PostsViewModel } from "../models/posts/postsViewModel";
+import { PaginatedComment } from '../models/comments/paginatedQueryComment';
 
 
-export const queryRepository = {
+export const queryPostRepository = {
 
     _postMapper(post: PostsMongoDbType): PostsViewModel {
         return {
@@ -18,7 +19,7 @@ export const queryRepository = {
             blogName: post.blogName,
             createdAt: post.createdAt
             }
-        },
+    },
 
     //3         READY
     async findAllPostsByBlogId(blogId: string, pagination: PaginatedType): Promise<PaginatedPost<PostsViewModel>> {    
@@ -32,7 +33,6 @@ export const queryRepository = {
         const filter = {}
         return this._findPostsByFilter(filter, pagination)
     },
-
 
     async _findPostsByFilter(filter: Filter<PostsMongoDbType>, pagination: PaginatedType): Promise<PaginatedPost<PostsViewModel>> {
         const result : WithId<PostsMongoDbType>[] = await postsCollection.find(filter)
@@ -64,4 +64,24 @@ export const queryRepository = {
             }
             return this._postMapper(findPost)
     },
+
+    async findAllCommentsforPostId(pagination: PaginatedType): Promise<PaginatedComment<CommentsMongoDbType>> {
+        const filter = {name: { $regex :pagination.searchNameTerm, $options: 'i'}}
+        const result : WithId<WithId<CommentsMongoDbType>>[] = await commentsCollection.find(filter, {projection: {_id: 0}})
+    
+    .sort({[pagination.sortBy]: pagination.sortDirection})
+    .skip(pagination.skip)
+    .limit(pagination.pageSize)
+    .toArray()
+        const totalCount: number = await commentsCollection.countDocuments(filter)
+        const pageCount: number = Math.ceil(totalCount / pagination.pageSize)
+
+    return {
+        pagesCount: pageCount,
+        page: pagination.pageNumber,
+        pageSize: pagination.pageSize,
+        totalCount: totalCount,
+        items: result
+        }
+    }
 }

@@ -5,6 +5,9 @@ export type PaginatedType = {
     sortBy: string,
     skip: number,
     searchNameTerm?: string,
+    searchLoginTerm?: string,
+    searchEmailTerm?: string
+
 }
 
 export type DefaultPagination = {
@@ -23,6 +26,7 @@ export type UserPagination = {
     skip: number,
     searchLoginTerm?: string,
     searchEmailTerm?: string
+   
 }
 
 export const getPaginationFromQuery = (query: any): PaginatedType => {
