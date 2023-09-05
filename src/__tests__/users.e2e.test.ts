@@ -45,10 +45,9 @@ describe('tests for /users', () => {
             id: '',
             login: '',
             email: '',
-            createdAt: '',
-            passwordSalt: '',
-            passwordHash: ''
+            createdAt: ''
         }
+            
         await getRequest()
                 .post(RouterPaths.users)
                 .send(data)
@@ -93,7 +92,7 @@ describe('tests for /users', () => {
         createdUser = createdUser
         expect.setState({ user1: createdUser})
     })
-    //let createdBlog2: BlogViewModel
+    
     it ("should create one more user with correct input data", async () => {
         const inputModel: UserInputModel = {
             login: 'new user',
@@ -147,8 +146,7 @@ describe('tests for /users', () => {
             login: 'new login',
             email: 'new email',
             createdAt: '30.06.2014',
-            passwordSalt: 'new password',
-            passwordHash: 'new password hash'
+            
         }
         await getRequest()
                 .put(`${RouterPaths.users}/${-234}`)
@@ -187,7 +185,8 @@ describe('tests for /users', () => {
     })
 
     it ("should delete both users", async () => {
-        const {user1, user2} = expect.getState()
+        const {user1} = expect.getState()
+        const {user2} = expect.getState()
 
         await getRequest()
                 .delete(`${RouterPaths.users}/${user1.id}`)   

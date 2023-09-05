@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import { jwtService } from "../../application/jwt-service";
 import { sendStatus } from "../../routers/send-status";
 import { usersCollection } from "../../db/db";
-import { UsersMongoDbType } from '../../types';
 import { UserViewModel } from '../../models/users/userViewModel';
 import { ObjectId } from 'mongodb';
 

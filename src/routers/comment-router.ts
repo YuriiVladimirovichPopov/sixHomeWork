@@ -4,12 +4,13 @@ import { commentsQueryRepository } from "../query repozitory/queryCommentsReposi
 import { commentsRepository } from "../repositories/comments-repository";
 import { sendStatus } from './send-status';
 import { UserViewModel } from '../models/users/userViewModel';
+import { createPostValidationForComment } from "../middlewares/validations/comments.validation";
 
 
 export const commentsRouter = Router({})
 
 
-commentsRouter.get('/:commentId', authMiddleware, async (req: Request, res: Response) => {
+commentsRouter.get('/:commentId', async (req: Request, res: Response) => {/**/ 
     const foundComment = await commentsQueryRepository.findCommentById(req.params.commentId)    
       if (foundComment) {
         return res.status(sendStatus.OK_200).send(foundComment) 
@@ -19,14 +20,14 @@ commentsRouter.get('/:commentId', authMiddleware, async (req: Request, res: Resp
 })
 
 
-commentsRouter.put('/:commentId', async (req: Request, res: Response) => {
+commentsRouter.put('/:commentId', authMiddleware, createPostValidationForComment, async (req: Request, res: Response) => {
     const user = req.user!                    //res.json(req.user!)
     const commentId = req.params.commentId
     const existingComment = await commentsQueryRepository.findCommentById(commentId);
     if (!existingComment) {
         return res.sendStatus(sendStatus.NOT_FOUND_404); 
     }
-
+console.log('put:', user)
     if (existingComment.commentatorInfo.userId !== user.id) {
       return res.sendStatus(sendStatus.FORBIDDEN_403)
     }
