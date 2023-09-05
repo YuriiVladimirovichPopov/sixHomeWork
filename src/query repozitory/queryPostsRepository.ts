@@ -58,21 +58,22 @@ export const queryPostRepository = {
             return null
         }
         const _id = new ObjectId(id)
-        const findPost = await postsCollection.findOne({id: _id})   // {_id: _id}
+        const findPost = await postsCollection.findOne({_id: _id})
             if (!findPost) {
         return null
             }
             return this._postMapper(findPost)
     },
 
-    async findAllCommentsforPostId(postId: string,pagination: PaginatedType): Promise<PaginatedComment<CommentsMongoDbType>> {
-        const result: CommentsMongoDbType[] = await commentsCollection.find({postId: postId}, {projection: {_id: 0, postId: 0}})
+    async findAllCommentsforPostId(pagination: PaginatedType): Promise<PaginatedComment<CommentsMongoDbType>> {
+        const filter = {name: { $regex :pagination.searchNameTerm, $options: 'i'}}
+        const result : WithId<WithId<CommentsMongoDbType>>[] = await commentsCollection.find(filter, {projection: {_id: 0}})
     
     .sort({[pagination.sortBy]: pagination.sortDirection})
     .skip(pagination.skip)
     .limit(pagination.pageSize)
     .toArray()
-        const totalCount: number = await commentsCollection.countDocuments({postId})
+        const totalCount: number = await commentsCollection.countDocuments(filter)
         const pageCount: number = Math.ceil(totalCount / pagination.pageSize)
 
     return {
