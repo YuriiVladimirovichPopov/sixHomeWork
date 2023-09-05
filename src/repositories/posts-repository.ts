@@ -47,10 +47,10 @@ export const postsRepository = {
        
        const createCommentForPost: CommentsMongoDbType = {
              _id: new ObjectId(),
+             postId,
              content, 
              commentatorInfo,
              createdAt: new Date().toISOString(),
-             postId
         }
    
     await commentsCollection.insertOne({...createCommentForPost})

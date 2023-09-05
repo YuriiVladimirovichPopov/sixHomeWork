@@ -43,7 +43,7 @@ postsRouter.post('/:postId/comments', authMiddleware, createPostValidationForCom
   const comment: CommentViewModel | null = 
   await postsRepository.createCommentforPostId(
     postWithId.id, 
-    req.body.content, 
+    req.params.content, //body
     { userId: req.user!.id, 
       userLogin: req.user!.login}
     )
