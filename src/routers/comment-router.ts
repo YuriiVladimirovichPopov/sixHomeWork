@@ -27,7 +27,7 @@ commentsRouter.put('/:commentId', authMiddleware, createPostValidationForComment
     if (!existingComment) {
         return res.sendStatus(sendStatus.NOT_FOUND_404); 
     }
-console.log('put:', user)
+    
     if (existingComment.commentatorInfo.userId !== user.id) {
       return res.sendStatus(sendStatus.FORBIDDEN_403)
     }

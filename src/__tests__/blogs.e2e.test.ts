@@ -36,7 +36,7 @@ describe('tests for /blogs', () => {
 
     it ("should get all posts fo specific blog", async () => { 
         await getRequest()
-           .get(`${RouterPaths.posts}/:blogId/posts`)
+           .get(`${RouterPaths.posts}/blogId/posts`)
            .expect(sendStatus.OK_200)
    })
 
@@ -178,7 +178,7 @@ describe('tests for /blogs', () => {
         }
 
         await getRequest()
-                .put(`${RouterPaths.blogs}/${blog1}`)  //be blog1.id
+                .put(`${RouterPaths.blogs}/${blog1.id}`)  //be blog1.id
                 .auth('admin', 'qwerty')
                 .send(inputModel)
                 .expect(sendStatus.NO_CONTENT_204)
