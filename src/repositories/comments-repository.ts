@@ -17,7 +17,7 @@ export const commentsRepository = {
         const filter = {_id: new ObjectId(commentId)}
         let foundComment = await commentsCollection.findOne(filter)
         if(foundComment){
-        const result = await commentsCollection.updateOne(filter,{ $set:{content: content}}) 
+        const result = await commentsCollection.updateOne(filter, { $set:{content: content}}) 
         return result.matchedCount === 1
         }
     },

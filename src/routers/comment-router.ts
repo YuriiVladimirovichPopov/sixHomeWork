@@ -57,27 +57,6 @@ commentsRouter.delete('/:commentId', authMiddleware, async (req: Request<{commen
 })
 
 
-/*
-commentsRouter.delete('/:commentId', authMiddleware, async (req: Request<{commentId: string},{},{},{},{user: string}>, res: Response) =>{
-    const user = req.user!
-    const commentId = req.params.commentId
-    const comment = await commentsQueryRepository.findCommentById(commentId)
-        if (!comment) {
-            return res.sendStatus(sendStatus.NOT_FOUND_404)
-        } else {
-      const commentUserId = comment.commentatorInfo.userId
-        if (commentUserId !== user.id) {
-          return res.sendStatus(sendStatus.FORBIDDEN_403)
-        }
-    const commentDelete = await commentsRepository.deleteComment(req.params.commentId);
-        if(commentDelete){
-            return res.sendStatus(sendStatus.NO_CONTENT_204)
-        }
-    }
-})
-*/ 
-
-
 
 
 
