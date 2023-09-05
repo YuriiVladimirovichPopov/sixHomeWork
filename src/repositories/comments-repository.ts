@@ -1,4 +1,4 @@
-import { WithId } from "mongodb"
+import { WithId, ObjectId } from 'mongodb';
 import { commentsCollection } from "../db/db"
 import { PaginatedType } from "../routers/helpers/pagination"
 import { PaginatedComment } from "../models/comments/paginatedQueryComment"
@@ -14,15 +14,16 @@ export const commentsRepository = {
     },
 
     async updateComment(commentId: string, content: string ) : Promise<CommentsMongoDbType | undefined | boolean> {
-        let foundComment = await commentsCollection.findOne({id: commentId})
+        const filter = {_id: new ObjectId(commentId)}
+        let foundComment = await commentsCollection.findOne(filter)
         if(foundComment){
-        const result = await commentsCollection.updateOne({id: commentId},{ $set:{content: content}}) 
+        const result = await commentsCollection.updateOne(filter,{ $set:{content: content}}) 
         return result.matchedCount === 1
         }
     },
 
     async deleteComment(commentId: string){
-        const result = await commentsCollection.deleteOne({id: commentId})
+        const result = await commentsCollection.deleteOne({_id: new ObjectId(commentId)})
         return  result.deletedCount === 1
     }
 }

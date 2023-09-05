@@ -5,6 +5,7 @@ import { PostsInputModel } from '../models/posts/postsInputModel';
 import { PostsViewModel } from '../models/posts/postsViewModel';
 import { blogsRepository } from './blogs-repository';
 import { randomUUID } from 'crypto';
+import { CommentViewModel } from '../models/comments/commentViewModel';
 
  
 export const postsRepository = {
@@ -42,10 +43,10 @@ export const postsRepository = {
     },
 
     async createCommentforPostId(postId: string, content: string, commentatorInfo: {userId:string, userLogin: string}):
-    Promise <CommentsMongoDbType> {
+    Promise <CommentViewModel> {
        
-       const createCommentForPost = {
-             id: randomUUID(),
+       const createCommentForPost: CommentsMongoDbType = {
+             _id: new ObjectId(),
              content, 
              commentatorInfo,
              createdAt: new Date().toISOString(),
@@ -54,7 +55,7 @@ export const postsRepository = {
    
     await commentsCollection.insertOne({...createCommentForPost})
        return  {
-         id: createCommentForPost.id,
+         id: createCommentForPost._id.toString(),
          content: createCommentForPost.content,
          commentatorInfo: createCommentForPost.commentatorInfo,
          createdAt: createCommentForPost.createdAt

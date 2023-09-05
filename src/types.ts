@@ -1,6 +1,7 @@
 import { Request } from "express"
 import { ObjectId } from 'mongodb';
 import { UserViewModel } from './models/users/userViewModel';
+import { CommentViewModel } from './models/comments/commentViewModel';
 
 
   export type BlogsMongoDbType = {
@@ -41,11 +42,12 @@ import { UserViewModel } from './models/users/userViewModel';
   }
 
   export type CommentsMongoDbType = {
-    id: string,       
+    _id: ObjectId,       
+    postId: string
     content: string,
     commentatorInfo: {
-    userId: string,
-    userLogin: string
+      userId: string,
+      userLogin: string
     },
     createdAt: string
   }

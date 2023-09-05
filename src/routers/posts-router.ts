@@ -22,14 +22,14 @@ import { postsRepository } from "../repositories/posts-repository";
 
 export const postsRouter = Router({})
 
-postsRouter.get('/:postId/comments', async (req: Request, res: Response<PaginatedPost<CommentViewModel>>) => {
+postsRouter.get('/:postId/comments', async (req: Request, res: Response<PaginatedComment<CommentViewModel>>) => {
   const foundedPostId = await queryPostRepository.findPostById(req.params.postId)
     if(!foundedPostId) {
     return res.sendStatus(sendStatus.NOT_FOUND_404)
    }
    
   const pagination = getPaginationFromQuery(req.query)
-  const allCommentsForPostId: PaginatedComment<CommentsMongoDbType> =
+  const allCommentsForPostId: PaginatedComment<CommentViewModel> =
   await commentsQueryRepository.getAllCommentsForPost(req.params.postId, pagination) 
       return res.status(sendStatus.OK_200).send(allCommentsForPostId)
 })
@@ -40,7 +40,7 @@ postsRouter.post('/:postId/comments', authMiddleware, createPostValidationForCom
       return res.sendStatus(sendStatus.NOT_FOUND_404)
     }
   
-  const comment: CommentsMongoDbType | null = 
+  const comment: CommentViewModel | null = 
   await postsRepository.createCommentforPostId(
     postWithId.id, 
     req.body.content, 

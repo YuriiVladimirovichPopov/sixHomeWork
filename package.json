@@ -11,7 +11,7 @@
     "jest": "jest -i",
     "test": "jest --runInBand --detectOpenHandles --forceExit",
     "test:coverage": "jest --runInBand --coverage",
-    "serveo": "ssh -R 80:localhost:3008 serveo.net"
+    "serveo": "ssh -R 80:localhost:3009 serveo.net"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
