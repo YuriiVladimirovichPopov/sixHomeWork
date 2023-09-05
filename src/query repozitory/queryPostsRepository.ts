@@ -67,7 +67,7 @@ export const queryPostRepository = {
 
     async findAllCommentsforPostId(pagination: PaginatedType): Promise<PaginatedComment<CommentsMongoDbType>> {
         const filter = {name: { $regex :pagination.searchNameTerm, $options: 'i'}}
-        const result : WithId<WithId<CommentsMongoDbType>>[] = await commentsCollection.find(filter, {projection: {_id: 0}})
+        const result : WithId<WithId<CommentsMongoDbType>>[] = await commentsCollection.find(filter)
     
     .sort({[pagination.sortBy]: pagination.sortDirection})
     .skip(pagination.skip)
