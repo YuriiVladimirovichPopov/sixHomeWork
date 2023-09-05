@@ -37,7 +37,7 @@ export const commentsQueryRepository = {
     },
    
     async findCommentById(id: string): Promise<CommentViewModel | null> {
-        if(!ObjectId.isValid(id)) return null
+       // if(!ObjectId.isValid(id)) return null
         const comment: CommentsMongoDbType | null = await commentsCollection.findOne({_id: new ObjectId(id)})
         if(!comment) return null
         return {
