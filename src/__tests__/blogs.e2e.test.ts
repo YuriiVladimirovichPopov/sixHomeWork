@@ -5,7 +5,7 @@ import { sendStatus } from "../routers/send-status";
 import { BlogViewModel } from "../models/blogs/blogsViewModel";
 import { BlogInputModel } from '../models/blogs/blogsInputModel';
 import { createBlog } from "./blog-test-helpers";
-import { blogsCollection } from '../db/db';
+import { blogsCollection, postsCollection } from '../db/db';
 import { RouterPaths } from "../routerPaths";
 
 
@@ -36,14 +36,22 @@ describe('tests for /blogs', () => {
 
     it ("should get all posts fo specific blog", async () => { 
         await getRequest()
-           .get(`${RouterPaths.posts}/blogId/posts`)
+           .get(`${RouterPaths.posts}/:blogId/posts`)
+           //.send({postsCollection})
            .expect(sendStatus.OK_200)
    })
 
     it ("shouldn't create a new blog without auth", async () => {
-        await getRequest().post(RouterPaths.blogs).send({}).expect(sendStatus.UNAUTHORIZED_401)
+        await getRequest()
+        .post(RouterPaths.blogs)
+        .send({})
+        .expect(sendStatus.UNAUTHORIZED_401)
 
-        await getRequest().post(RouterPaths.blogs).auth('login', 'password').send({}).expect(sendStatus.UNAUTHORIZED_401)  
+        await getRequest()
+        .post(RouterPaths.blogs)
+        .auth('login', 'password')
+        .send({})
+        .expect(sendStatus.UNAUTHORIZED_401)  
     })
 
     it ("shouldn't create a new blog with incorrect input data", async () => {

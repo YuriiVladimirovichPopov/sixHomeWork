@@ -58,7 +58,7 @@ describe('tests for /users', () => {
                 .expect(sendStatus.OK_200)
     })
 
-    let createdUser: UserViewModel
+    let createdUser1: UserViewModel
 
     it ("should create a new user with correct input data", async () => {
         const countOfUsersBefore = await usersCollection.countDocuments()   
@@ -73,8 +73,8 @@ describe('tests for /users', () => {
 
         expect(createResponse.status).toBe(sendStatus.CREATED_201)
 
-        const createdBlog: UserViewModel = createResponse.body
-        expect(createdBlog).toEqual({
+        const createdUser: UserViewModel = createResponse.body
+        expect(createdUser).toEqual({
             id: expect.any(String),
             login: inputModel.login,
             email: inputModel.email,
@@ -89,7 +89,7 @@ describe('tests for /users', () => {
         expect(getByIdRes.status).toBe(sendStatus.OK_200)
         expect(getByIdRes.body).toEqual(createdUser)
         
-        createdUser = createdUser
+        createdUser1 = createdUser
         expect.setState({ user1: createdUser})
     })
     
