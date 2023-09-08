@@ -6,7 +6,7 @@ const loginValidation = body('login')
                                             .isString()
                                             .isLength({min: 3, max: 10})
                                             .trim()
-                                            .matches(/^[a-zA-Z0-9_-]*$/)
+                                            //.matches(/^[a-zA-Z0-9_-]*$/)
                                             .withMessage('incorrect login')
 
 const passwordValidation = body('password')
@@ -22,7 +22,10 @@ const emailValidation = body('email')
                                             .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)
                                             .withMessage('incorrect email')
 
-const loginOrEmailValidation = body('loginOrEmail').isString().trim().isLength({min: 3, max: 30})       //todo
+const loginOrEmailValidation = body('loginOrEmail')
+                                            .isString()
+                                            .trim()
+                                            .isLength({min: 3, max: 30})       //todo
 
 
 export const loginUserValidation = [loginOrEmailValidation, passwordValidation] //TODO

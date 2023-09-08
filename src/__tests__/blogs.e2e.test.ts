@@ -5,7 +5,7 @@ import { sendStatus } from "../routers/send-status";
 import { BlogViewModel } from "../models/blogs/blogsViewModel";
 import { BlogInputModel } from '../models/blogs/blogsInputModel';
 import { createBlog } from "./blog-test-helpers";
-import { blogsCollection, postsCollection } from '../db/db';
+import { blogsCollection } from '../db/db';
 import { RouterPaths } from "../routerPaths";
 
 
@@ -33,13 +33,6 @@ describe('tests for /blogs', () => {
                 .get(`${RouterPaths.blogs}/999999999999999999999999`)
                 .expect(sendStatus.NOT_FOUND_404)
     })
-
-    it ("should get all posts fo specific blog", async () => { 
-        await getRequest()
-           .get(`${RouterPaths.posts}/:blogId/posts`)
-           //.send({postsCollection})
-           .expect(sendStatus.OK_200)
-   })
 
     it ("shouldn't create a new blog without auth", async () => {
         await getRequest()
@@ -112,7 +105,24 @@ describe('tests for /blogs', () => {
         createdBlog1 = createdBlog
         expect.setState({ blog1: createdBlog})
     })
-    //let createdBlog2: BlogViewModel
+
+    it ("should get all posts fo specific blog", async () => { 
+
+        const {blog1} = expect.getState();
+
+        await getRequest()
+           .get(`${RouterPaths.blogs}/${blog1.id}/posts`)
+           .expect(sendStatus.OK_200, { pagesCount: 0, page: 1, pageSize: 10, totalCount: 0, items: [] })
+   })
+   
+    it ("shouldn't create post fo specific blog", async () => {
+
+   })
+
+    it ("should create posts fo specific blog", async () => {
+
+   })
+
     it ("should create one more blog with correct input data", async () => {
         const inputModel: BlogInputModel = {
             name: 'new blog',
@@ -210,7 +220,7 @@ describe('tests for /blogs', () => {
         const {blog1, blog2} = expect.getState()
 
         await getRequest()
-                .delete(`${RouterPaths.blogs}/${blog1}`)   // be blog1.id
+                .delete(`${RouterPaths.blogs}/${blog1.id}`)   // be blog1.id
                 .auth('admin', 'qwerty')
                 .expect(sendStatus.NO_CONTENT_204)
 
@@ -229,10 +239,6 @@ describe('tests for /blogs', () => {
 
         await getRequest()
                 .get(RouterPaths.blogs)
-                .expect(sendStatus.OK_200, [])
+                .expect(sendStatus.OK_200, { pagesCount: 0, page: 1, pageSize: 10, totalCount: 0, items: [] })
     })
 })
-    
-    
-
-        
